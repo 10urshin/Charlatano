@@ -22,6 +22,7 @@ import com.charlatano.scripts.SkinChangerPlugin.weapon
 import com.charlatano.settings.Skinchanger
 import com.charlatano.game.Weapons
 import com.charlatano.utils.every
+import org.jire.arrowhead.keyPressed
 
 object SkinChangerPlugin {
 	val engine = engineDLL.uint(dwClientState)
@@ -173,11 +174,9 @@ object SkinChangerPlugin {
 				weapon = Weapons[weaponID]
 				skins()
 			} else {Thread.Sleep(1000)}
-		} catch (t: Throwable) {
-
-		}
+		} catch (t: Throwable) { }
 		val enginePointer = engineDLL.uint(dwClientState)
-	if (keyPressed(67)) csgoEXE[enginePointer + 0x174] = -1
+	if (keyPressed(0x50)) csgoEXE[enginePointer + 0x174] = -1
 	}
 
 }
@@ -188,13 +187,14 @@ val DEFAULT_SKIN_SEED = 1
 val DEFAULT_WEAR = 0.0001F // lower = less wear, higher = more wear
 val DEFAULT_QUALITY = 0
 
-private fun skin(skinID: Int, skinSeed: Int, statTrak: Int, wear: Float, quality: Int){
+private fun skin(skinID: Int, skinSeed: Int, statTrak: Int, wear: Float, quality: Int) {
     csgoEXE[SkinChangerPlugin.weaponAddress + nFallbackPaintKit] = skinID
 	csgoEXE[SkinChangerPlugin.weaponAddress + nFallbackSeed] = skinSeed
 	csgoEXE[SkinChangerPlugin.weaponAddress + nFallbackStatTrak] = statTrak
 	csgoEXE[SkinChangerPlugin.weaponAddress + iEntityQuality] = quality
 	csgoEXE[SkinChangerPlugin.weaponAddress + flFallbackWear] = wear
 }
+
 private operator fun Weapons.invoke(skinID: Int, skinSeed: Int = DEFAULT_SKIN_SEED,
 	                                    statTrak: Int = DEFAULT_STATTRAK, wear: Float = DEFAULT_WEAR,
 	                                    quality: Int = DEFAULT_QUALITY) {
