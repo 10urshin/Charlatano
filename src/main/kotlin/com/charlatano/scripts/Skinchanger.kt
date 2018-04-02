@@ -58,7 +58,7 @@ object SkinChanger {
 
 	fun skinwepindex() = thread {
 		while (true) {
-			if (me > 0 && !me.dead() && me.onGround() && !scaleFormDLL.boolean(ScaleFormOffsets.bCursorEnabled)) {
+			if (ENABLE_SKIN_CHANGER && me > 0 && !me.dead() && me.onGround() && !scaleFormDLL.boolean(ScaleFormOffsets.bCursorEnabled)) {
 				forEntities {
 					if (it.type.weapon) {
 						val weaponEntity = it.entity
@@ -85,7 +85,7 @@ object SkinChanger {
 					csgoEXE[enginePointer + 0x174] = -1
 				}
 			}
-			Thread.yield()
+			if(ENABLE_SKIN_CHANGER) Thread.yield() else Thread.sleep(500)
 		}
 	}
 
