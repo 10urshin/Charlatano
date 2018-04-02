@@ -38,6 +38,7 @@ internal fun reset() {
 	target.set(-1L)
 	bone.set(if (AIM_AT_HEAD) HEAD_BONE else BODY_BONE)
 	perfect.set(false)
+	Thread.sleep(AIM_TARGET_CHANGE_DELAY)
 }
 
 internal fun findTarget(position: Angle, angle: Angle, allowPerfect: Boolean,
