@@ -59,6 +59,11 @@ AIM_SPEED_MAX = 36
  */
 AIM_STRICTNESS = 1.4
 
+/**
+ * How many milliseconds aimbot will wait after current target die to change the target.
+ */
+var AIM_TARGET_CHANGE_DELAY: Long = 150
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
