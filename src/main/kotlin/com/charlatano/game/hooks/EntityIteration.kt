@@ -48,21 +48,21 @@ private fun reset() {
 fun constructEntities() = every(128) {
 	me = clientDLL.uint(dwLocalPlayer)
 	if (me <= 0) return@every
-	
+
 	clientState = engineDLL.uint(dwClientState)
-	
+
 	val glowObject = clientDLL.uint(dwGlowObject)
 	val glowObjectCount = clientDLL.int(dwGlowObject + 4)
-	
+
 	if (shouldReset()) reset()
-	
+
 	for (glowIndex in 0..glowObjectCount) {
 		val glowAddress = glowObject + (glowIndex * GLOW_OBJECT_SIZE)
 		val entity = csgoEXE.uint(glowAddress)
 		val type = EntityType.byEntityAddress(entity)
-		
+
 		val context = contexts[glowIndex].set(entity, glowAddress, glowIndex, type)
-		
+
 		with(entities[type]!!) {
 			if (!contains(context)) add(context)
 		}

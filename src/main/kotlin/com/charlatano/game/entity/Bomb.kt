@@ -42,7 +42,7 @@ internal fun Bomb.owner() = csgoEXE.uint(this + hOwnerEntity)
 
 internal fun Bomb.carrier(): Player {
 	val owner = owner()
-	return if (owner > 0) (owner and 0xFFF) - 1L else 0
+	return if (owner > 0) clientDLL.uint(dwEntityList + ((owner and 0xFFF) - 1L) * 0x10) else 0
 }
 
 internal fun Bomb.planter(): Player = clientDLL.uint(dwEntityList + (carrier() * ENTITY_SIZE))

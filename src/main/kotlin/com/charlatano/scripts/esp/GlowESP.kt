@@ -21,37 +21,40 @@ package com.charlatano.scripts.esp
 import com.charlatano.game.CSGO.csgoEXE
 import com.charlatano.game.Color
 import com.charlatano.game.entity.*
+import com.charlatano.game.entityByType
 import com.charlatano.game.forEntities
 import com.charlatano.game.me
 import com.charlatano.settings.*
 import com.charlatano.utils.every
 
-internal fun glowEsp() = every(4) {
+internal fun glowEsp() = every(0) {
 	if (!GLOW_ESP || !ENABLE_ESP) return@every
-	
+
+	val bomb: Entity = entityByType(EntityType.CC4)?.entity ?: -1
+
 	forEntities {
 		val entity = it.entity
 		if (entity <= 0 || me == entity) return@forEntities
-		
+
 		val glowAddress = it.glowAddress
 		if (glowAddress <= 0) return@forEntities
-		
+
 		when (it.type) {
 			EntityType.CCSPlayer -> {
 				if (entity.dead() || (!SHOW_DORMANT && entity.dormant())) return@forEntities
-				
+
 				val team = me.team() == entity.team()
 				var health = (entity.health() * 2 + 5).toInt()
-				
+
 				if (SHOW_ENEMIES && !team) {
 					if (!HEALTH_BASED_GLOW) {
-						glowAddress.glow(ENEMY_COLOR)
- 						entity.chams(ENEMY_COLOR)
- 					}
- 					else {
- 						glowAddress.glow(Color(health, 0, 255-health))
- 						entity.chams(Color(health, 0, 255-health))
- 					}
+						val c = if (bomb > 0 && entity == bomb.carrier()) BOMB_CARRIER_COLOR else ENEMY_COLOR
+						glowAddress.glow(c)
+						entity.chams(c)
+					} else {
+						glowAddress.glow(Color(health, 0, 255 - health))
+						entity.chams(Color(health, 0, 255 - health))
+					}
 				} else if (SHOW_TEAM && team) {
 					glowAddress.glow(TEAM_COLOR)
 					entity.chams(TEAM_COLOR)

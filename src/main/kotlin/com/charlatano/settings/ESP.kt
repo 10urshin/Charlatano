@@ -27,12 +27,12 @@ import com.charlatano.game.Color
 /**
  * Whether or not to use skeleton ESP.
  */
-var SKELETON_ESP = false
+var SKELETON_ESP = true
 
 /**
  * Whether or not to use box ESP.
  */
-var BOX_ESP = false
+var BOX_ESP = true
 
 /**
  * Whether or not to use the within-game glow ESP.
@@ -45,10 +45,9 @@ var GLOW_ESP = true
  * @@ Overrides ENEMY_COLOR @@
  * Health at 100% is represented with red.
  * 0% Health is represented with blue.
- * The damage the enemy has taken determines how blue they will be. 
+ * The damage the enemy has taken determines how blue they will be.
  */
 var HEALTH_BASED_GLOW = true
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// --- TOGGLES --- ////////////////////////////////////////
@@ -83,14 +82,29 @@ var SHOW_BOMB = true
 var SHOW_WEAPONS = false
 
 /**
+ * Whether or not to show player's weapon and health on ESP.
+ * Only works if BOX ESP is enabled.
+ */
+var SHOW_WEAPON_AND_HEALTH = false
+
+/**
  * Whether or not to highlight grenades.
  */
 var SHOW_GRENADES = false
 
+/**
+ * Whether or not to draw a crosshair when holding a sniper rifle.
+ */
+var DRAW_CROSSHAIR_ON_SNIPER = true
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// --- COLORS --- ///////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * The color to draw crosshair.
+ */
+var CROSSHAIR_COLOR = Color(255, 255, 0, 0.7)
 
 /**
  * The color to highlight your team mates.
@@ -101,6 +115,11 @@ var TEAM_COLOR = Color(0, 0, 255)
  * The color to highlight your enemies.
  */
 var ENEMY_COLOR = Color(255, 0, 0)
+
+/**
+ * The color to highlight the enemy carriyng the bomb if you are CT.
+ */
+var BOMB_CARRIER_COLOR = Color(255, 255, 255)
 
 /**
  * The color to highlight the bomb.
@@ -117,7 +136,6 @@ var WEAPON_COLOR = Color(0, 255, 0, 0.5)
  */
 var GRENADE_COLOR = Color(0, 255, 0, 1.0)
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// --- MISCELLANEOUS --- ////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,3 +146,8 @@ var GRENADE_COLOR = Color(0, 255, 0, 1.0)
  * WARNING: This may cause random game crashes if you enable it.
  */
 var COLOR_MODELS = false
+
+/**
+ * The line width used to draw box esp
+ */
+var LINE_WIDTH = 5f

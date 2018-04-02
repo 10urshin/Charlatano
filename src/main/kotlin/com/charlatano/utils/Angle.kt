@@ -25,16 +25,16 @@ typealias Angle = Vector
 fun Vector.normalize() = apply {
 	if (x != x) x = 0.0
 	if (y != y) y = 0.0
-	
+
 	if (x > 89) x = 89.0
 	if (x < -89) x = -89.0
-	
+
 	while (y > 180) y -= 360
 	while (y <= -180) y += 360
-	
+
 	if (y > 180) y = 180.0
 	if (y < -180F) y = -180.0
-	
+
 	z = 0.0
 }
 
@@ -50,7 +50,7 @@ internal fun Angle.finalize(orig: Angle, strictness: Double) {
 	y -= orig.y
 	z = 0.0
 	normalize()
-	
+
 	x = orig.x + x * strictness
 	y = orig.y + y * strictness
 	normalize()

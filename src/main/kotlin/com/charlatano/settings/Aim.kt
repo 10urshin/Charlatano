@@ -112,7 +112,7 @@ var TEAMMATES_ARE_ENEMIES = false
  * Whether or not to ignore walls when aiming.
  */
 var IGNORE_WALLS = false
- 
+
 /**
  * The duration in milliseconds at which aimbot paths are recalculated.
  */

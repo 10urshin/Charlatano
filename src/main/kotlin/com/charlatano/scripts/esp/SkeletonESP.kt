@@ -22,18 +22,20 @@ import com.badlogic.gdx.graphics.Color
 import com.charlatano.game.CSGO.csgoEXE
 import com.charlatano.game.CSGO.engineDLL
 import com.charlatano.game.entity.*
+import com.charlatano.game.entityByType
 import com.charlatano.game.entity.EntityType.Companion.ccsPlayer
 import com.charlatano.game.forEntities
 import com.charlatano.game.me
 import com.charlatano.game.offsets.EngineOffsets.pStudioModel
 import com.charlatano.game.worldToScreen
 import com.charlatano.overlay.CharlatanoOverlay
-import com.charlatano.settings.ENABLE_ESP
-import com.charlatano.settings.SKELETON_ESP
+import com.charlatano.settings.*
 import com.charlatano.utils.Vector
 import com.charlatano.utils.collections.CacheableList
 import com.charlatano.utils.extensions.uint
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap
+import com.badlogic.gdx.Gdx.gl
+import com.charlatano.settings.LINE_WIDTH
 
 private val bones = Array(2048) { Line() }
 private val entityBones = Long2ObjectArrayMap<CacheableList<Pair<Int, Int>>>()
@@ -42,7 +44,9 @@ private var currentIdx = 0
 internal fun skeletonEsp() {
 	CharlatanoOverlay {
 		if (!SKELETON_ESP || !ENABLE_ESP) return@CharlatanoOverlay
-		
+
+		val bomb: Entity = entityByType(EntityType.CC4)?.entity ?: -1
+
 		forEntities(ccsPlayer) {
 			val entity = it.entity
 			if (entity > 0 && entity != me && !entity.dead() && !entity.dormant()) {
@@ -52,7 +56,7 @@ internal fun skeletonEsp() {
 						val studioModel = findStudioModel(entityModel)
 						val numbones = csgoEXE.uint(studioModel + 0x9C).toInt()
 						val boneIndex = csgoEXE.uint(studioModel + 0xA0)
-						
+
 						var offset = 0
 						for (idx in 0..numbones - 1) {
 							val parent = csgoEXE.int(studioModel + boneIndex + 0x4 + offset)
@@ -60,20 +64,21 @@ internal fun skeletonEsp() {
 								val flags = csgoEXE.uint(studioModel + boneIndex + 0xA0 + offset) and 0x100
 								if (flags != 0L) add(parent to idx)
 							}
-							
+
 							offset += 216
 						}
-						
+
 						entityBones.put(entity, this)
 					}
-					
-					forEach { drawBone(entity, it.first, it.second) }
+
+					forEach { drawBone(entity, bomb, it.first, it.second) }
 				}
 			}
 		}
-		
+
 		shapeRenderer.apply {
 			begin()
+			gl.glLineWidth(LINE_WIDTH);
 			for (i in 0..currentIdx - 1) {
 				val bone = bones[i]
 				color = bone.color
@@ -81,7 +86,7 @@ internal fun skeletonEsp() {
 			}
 			end()
 		}
-		
+
 		currentIdx = 0
 	}
 }
@@ -89,22 +94,22 @@ internal fun skeletonEsp() {
 private fun findStudioModel(pModel: Long): Long {
 	val type = csgoEXE.uint(pModel + 0x0110)
 	if (type != 3L) return 0 // Type is not Studiomodel
-	
+
 	var handle = csgoEXE.uint(pModel + 0x0138) and 0xFFFF
 	if (handle == 0xFFFFL) return 0 // Handle is not valid
 	handle = handle shl 4
-	
+
 	var studioModel = engineDLL.uint(pStudioModel)
 	studioModel = csgoEXE.uint(studioModel + 0x28)
 	studioModel = csgoEXE.uint(studioModel + handle + 0xC)
-	
+
 	return csgoEXE.uint(studioModel + 0x74)
 }
 
 private val colors: Array<Color> = Array(101) {
 	val red = 1 - (it / 100f)
 	val green = (it / 100f)
-	
+
 	Color(red, green, 0f, 1f)
 }
 
@@ -114,7 +119,7 @@ private val endBone = Vector()
 private val startDraw = Vector()
 private val endDraw = Vector()
 
-private fun drawBone(target: Player, start: Int, end: Int) {
+private fun drawBone(target: Player, bomb: Entity, start: Int, end: Int) {
 	val boneMatrix = target.boneMatrix()
 	startBone.set(
 			target.bone(0xC, start, boneMatrix),
@@ -124,19 +129,22 @@ private fun drawBone(target: Player, start: Int, end: Int) {
 			target.bone(0xC, end, boneMatrix),
 			target.bone(0x1C, end, boneMatrix),
 			target.bone(0x2C, end, boneMatrix))
-	
+
 	if (worldToScreen(startBone, startDraw) && worldToScreen(endBone, endDraw)) {
 		bones[currentIdx].apply {
 			sX = startDraw.x.toInt()
 			sY = startDraw.y.toInt()
 			eX = endDraw.x.toInt()
 			eY = endDraw.y.toInt()
-			color = colors[target.health()]
+			val c = if (bomb > 0 && target == bomb.carrier()) BOMB_CARRIER_COLOR
+			else if (me.team() == target.team()) TEAM_COLOR
+			else ENEMY_COLOR
+			color = Color(c.red / 255f, c.green / 255f, c.blue / 255f, 1f)
 		}
 		currentIdx++
 	}
 }
 
 private data class Line(var sX: Int = -1, var sY: Int = -1,
-                        var eX: Int = -1, var eY: Int = -1,
-                        var color: Color = Color.WHITE)
+						var eX: Int = -1, var eY: Int = -1,
+						var color: Color = Color.WHITE)

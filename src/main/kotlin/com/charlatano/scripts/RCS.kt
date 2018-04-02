@@ -26,6 +26,7 @@ import com.charlatano.game.clientState
 import com.charlatano.game.entity.Player
 import com.charlatano.game.entity.weapon
 import com.charlatano.game.me
+import com.charlatano.game.Weapons
 import com.charlatano.game.netvars.NetVarOffsets.iShotsFired
 import com.charlatano.game.netvars.NetVarOffsets.vecPunch
 import com.charlatano.game.offsets.ClientOffsets.dwLocalPlayer
@@ -36,21 +37,23 @@ import com.charlatano.settings.*
 import com.charlatano.utils.*
 import com.charlatano.utils.extensions.uint
 
-private @Volatile var prevFired = 0
+private @Volatile
+var prevFired = 0
 private val lastPunch = DoubleArray(2)
 
 fun rcs() = every(RCS_DURATION) {
-	if (!ENABLE_RCS) return@every
-	
+	//UPDATED: No rcs for deagle, awp and scout
+	if (!ENABLE_RCS || me.weapon() == Weapons.DESERT_EAGLE || me.weapon() == Weapons.AWP || me.weapon() == Weapons.SSG08) return@every
+
 	val myAddress: Player = clientDLL.uint(dwLocalPlayer)
 	if (myAddress <= 0) return@every
-	
+
 	val shotsFired = csgoEXE.int(myAddress + iShotsFired)
 	if (shotsFired <= 2 || shotsFired < prevFired || scaleFormDLL.boolean(bCursorEnabled)) {
 		reset()
 		return@every
 	}
-	
+
 	if (!CLASSIC_OFFENSIVE) {
 		val weapon = me.weapon()
 		if (!weapon.automatic) {
@@ -58,7 +61,7 @@ fun rcs() = every(RCS_DURATION) {
 			return@every
 		}
 	}
-	
+
 	val punch = Vector(csgoEXE.float(myAddress + vecPunch).toDouble(),
 			csgoEXE.float(myAddress + vecPunch + 4).toDouble(), 0.0).apply {
 		x *= if (RCS_MAX > RCS_MIN) randDouble(RCS_MIN, RCS_MAX) else RCS_MIN
@@ -66,25 +69,25 @@ fun rcs() = every(RCS_DURATION) {
 		z = 0.0
 		normalize()
 	}
-	
+
 	val newView = Vector(punch.x, punch.y, punch.z).apply {
 		x -= lastPunch[0]
 		y -= lastPunch[1]
 		z = 0.0
 		normalize()
 	}
-	
+
 	val view = clientState.angle().apply {
 		x -= newView.x
 		y -= newView.y
 		z = 0.0
 		normalize()
 	}
-	
+
 	// maybe swap with flat aim for better accuracy
 	// but really you'd only need it in LEM+
 	pathAim(clientState.angle(), view, RCS_SMOOTHING)
-	
+
 	lastPunch[0] = punch.x
 	lastPunch[1] = punch.y
 	prevFired = shotsFired
