@@ -26,12 +26,12 @@ import com.charlatano.settings.*
 /**
  * Whether or not to use skeleton ESP.
  */
-SKELETON_ESP = false
+SKELETON_ESP = true
 
 /**
  * Whether or not to use box ESP.
  */
-BOX_ESP = false
+BOX_ESP = true
 
 /**
  * Whether or not to use the within-game glow ESP.
@@ -46,8 +46,7 @@ GLOW_ESP = true
  * 0% Health is represented with blue.
  * The damage the enemy has taken determines how blue they will be. 
  */
-HEALTH_BASED_GLOW = true
-
+HEALTH_BASED_GLOW = false
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +69,7 @@ SHOW_ENEMIES = true
  * Enabling this can allow you to see players at a further distance,
  * but you may see some "ghost" players which are really not there.
  */
-SHOW_DORMANT = false
+SHOW_DORMANT = true
 
 /**
  * Whether or not to highlight the bomb.
@@ -80,14 +79,17 @@ SHOW_BOMB = true
 /**
  * Whether or not to highlight weapons.
  */
-SHOW_WEAPONS = false
+SHOW_WEAPONS = true
 
 /**
  * Whether or not to highlight grenades.
  */
-SHOW_GRENADES = false
+SHOW_GRENADES = true
 
-
+/**
+ * Whether or not to draw a crosshair when holding a sniper rifle.
+ */
+DRAW_CROSSHAIR_ON_SNIPER = true
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// --- COLORS --- ///////////////////////////////////////
@@ -96,12 +98,20 @@ SHOW_GRENADES = false
 /**
  * The color to highlight your team mates.
  */
-TEAM_COLOR = Color(0, 255, 0)
+TEAM_COLOR = Color(0, 0, 255)
 
 /**
  * The color to highlight your enemies.
  */
-ENEMY_COLOR = Color(255, 0, 0)
+ENEMY_COLOR = Color(255, 255, 0)
+
+/**
+ * The color to highlight the enemy carrying the bomb if you are CT.
+ *
+ * It always works on Box ESP and Skeleton ESP
+ * It only works if HEALTH_BASED_GLOW is disabled on Glow ESP
+ */
+BOMB_CARRIER_COLOR = Color(255, 255, 255)
 
 /**
  * The color to highlight the bomb.
@@ -118,7 +128,6 @@ WEAPON_COLOR = Color(0, 255, 0, 0.5)
  */
 GRENADE_COLOR = Color(0, 255, 0, 1.0)
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////// --- MISCELLANEOUS --- ////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,3 +138,8 @@ GRENADE_COLOR = Color(0, 255, 0, 1.0)
  * WARNING: This may cause random game crashes if you enable it.
  */
 COLOR_MODELS = false
+
+/**
+ * The line width used to draw box esp
+ */
+LINE_WIDTH = 5f
