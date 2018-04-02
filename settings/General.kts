@@ -27,7 +27,7 @@ START_KEY = 8
 /**
  * Time in milliseconds START_KEY has to be held
  */
-HOLD_TIME = 2000
+HOLD_TIME = 200
 
 /**
  * Set this to true if you're playing CS:CO (Counter-Strike: Classic Offensive).
