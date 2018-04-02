@@ -68,3 +68,8 @@ ENABLE_REDUCED_FLASH = true
  * Enables the bomb timer script.
  */
 ENABLE_BOMB_TIMER = true
+
+/**
+ * Enables the skin changer script.
+ */
+ENABLE_SKIN_CHANGER = false
