@@ -22,6 +22,7 @@ import java.util.*
 import com.charlatano.game.Weapons
 import com.charlatano.game.Skin
 
+var APPLY_SKIN_KEY = 3
 
 var SKINS: HashMap<Weapons, Skin> = hashMapOf(
 		Weapons.DESERT_EAGLE to Skin(351, 7, 132),
