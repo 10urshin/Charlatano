@@ -18,17 +18,31 @@
 
 package com.charlatano.scripts
 
+import com.charlatano.game.me
+import com.charlatano.game.CSGO
+import com.charlatano.game.CSGO.clientDLL
 import com.charlatano.game.hooks.onGround
+import com.charlatano.game.entity.dead
+import com.charlatano.game.entity.onGround
 import com.charlatano.settings.BUNNY_HOP_KEY
 import com.charlatano.settings.ENABLE_BUNNY_HOP
+import com.charlatano.game.offsets.ClientOffsets
+import com.charlatano.game.offsets.ClientOffsets.dwForceJump
+import com.charlatano.game.offsets.ScaleFormOffsets
 import com.charlatano.utils.*
+import com.charlatano.utils.every
+import com.charlatano.utils.extensions.uint
 import org.jire.arrowhead.keyPressed
+import org.jire.arrowhead.keyReleased
 
-fun bunnyHop() = onGround {
+fun bunnyHop() = every(1) {
 	if (ENABLE_BUNNY_HOP && keyPressed(BUNNY_HOP_KEY)) {
-		randScroll()
-		Thread.sleep(8 + randLong(10))
-		randScroll()
+		me > 0 && !me.dead() && me.onGround() && !CSGO.scaleFormDLL.boolean(ScaleFormOffsets.bCursorEnabled)
+		if (me.onGround()) {
+			randScroll()
+			Thread.sleep(8 + randLong(10))
+			randScroll()
+		}
 	}
 }
 

@@ -25,99 +25,99 @@ import com.charlatano.utils.*
 import org.jire.arrowhead.keyPressed
 
 fun Toggles_AIM() = every(10) {
-	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_AIM)) 
-		|| (HOLD_TOGGLE_AIM && keyPressed(TOGGLE_KEY_AIM))) {
+	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_AIM))
+			|| (HOLD_TOGGLE_AIM && keyPressed(TOGGLE_KEY_AIM))) {
 		ENABLE_AIM = !ENABLE_AIM
-		
-		do { 
-			Thread.sleep(25) 
+
+		do {
+			Thread.sleep(25)
 		} while (keyPressed(TOGGLE_KEY_AIM))
-			
-		if (HOLD_TOGGLE_AIM) 
+
+		if (HOLD_TOGGLE_AIM)
 			ENABLE_AIM = true
 	}
 }
 
 fun Toggles_BUNNYHOP() = every(10) {
-	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_BUNNYHOP)) 
-		|| (HOLD_TOGGLE_BUNNYHOP && keyPressed(TOGGLE_KEY_BUNNYHOP))) {
+	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_BUNNYHOP))
+			|| (HOLD_TOGGLE_BUNNYHOP && keyPressed(TOGGLE_KEY_BUNNYHOP))) {
 		ENABLE_BUNNY_HOP = !ENABLE_BUNNY_HOP
-		
-		do { 
-			Thread.sleep(25) 
+
+		do {
+			Thread.sleep(25)
 		} while (keyPressed(TOGGLE_KEY_BUNNYHOP))
-			
-		if (HOLD_TOGGLE_AIM) 
+
+		if (HOLD_TOGGLE_AIM)
 			ENABLE_BUNNY_HOP = false
 	}
 }
 
 fun Toggles_ESP() = every(10) {
-	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_ESP)) 
-		|| (HOLD_TOGGLE_ESP && keyPressed(TOGGLE_KEY_ESP))) {
+	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_ESP))
+			|| (HOLD_TOGGLE_ESP && keyPressed(TOGGLE_KEY_ESP))) {
 		ENABLE_ESP = !ENABLE_ESP
-		
-		do { 
-			Thread.sleep(25) 
+
+		do {
+			Thread.sleep(25)
 		} while (keyPressed(TOGGLE_KEY_ESP))
-			
-		if (HOLD_TOGGLE_ESP) 
+
+		if (HOLD_TOGGLE_ESP)
 			ENABLE_ESP = false
 	}
 }
 
 fun Toggles_RAGE() = every(10) {
-	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_RAGE)) 
-		|| (HOLD_TOGGLE_RAGE && keyPressed(TOGGLE_KEY_RAGE))) {
+	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_RAGE))
+			|| (HOLD_TOGGLE_RAGE && keyPressed(TOGGLE_KEY_RAGE))) {
 		ENABLE_RAGE = !ENABLE_RAGE
-		
-		do { 
-			Thread.sleep(25) 
+
+		do {
+			Thread.sleep(25)
 		} while (keyPressed(TOGGLE_KEY_RAGE))
-			
-		if (HOLD_TOGGLE_RAGE) 
+
+		if (HOLD_TOGGLE_RAGE)
 			ENABLE_RAGE = false
 	}
 }
 
 fun Toggles_RCS() = every(10) {
-	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_RCS)) 
-		|| (HOLD_TOGGLE_RCS && keyPressed(TOGGLE_KEY_RCS))) {
+	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_RCS))
+			|| (HOLD_TOGGLE_RCS && keyPressed(TOGGLE_KEY_RCS))) {
 		ENABLE_RCS = !ENABLE_RCS
-		
-		do { 
-			Thread.sleep(25) 
+
+		do {
+			Thread.sleep(25)
 		} while (keyPressed(TOGGLE_KEY_RCS))
-			
-		if (HOLD_TOGGLE_RCS) 
+
+		if (HOLD_TOGGLE_RCS)
 			ENABLE_RCS = false
 	}
 }
 
 fun Toggles_BONETRIGGER() = every(10) {
-	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_BONETRIGGER)) 
-		|| (HOLD_TOGGLE_BONETRIGGER && keyPressed(TOGGLE_KEY_BONETRIGGER))) {
+	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_BONETRIGGER))
+			|| (HOLD_TOGGLE_BONETRIGGER && keyPressed(TOGGLE_KEY_BONETRIGGER))) {
 		ENABLE_BONE_TRIGGER = !ENABLE_BONE_TRIGGER
-		
-		do { 
-			Thread.sleep(25) 
+
+		do {
+			Thread.sleep(25)
 		} while (keyPressed(TOGGLE_KEY_BONETRIGGER))
-			
-		if (HOLD_TOGGLE_BONETRIGGER) 
+
+		if (HOLD_TOGGLE_BONETRIGGER)
 			ENABLE_BONE_TRIGGER = false
 	}
 }
 
 fun Toggles_BONETARGET() = every(10) {
-	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_AIM_AT_HEAD)) 
-		|| (HOLD_TOGGLE_AIM_AT_HEAD && keyPressed(TOGGLE_KEY_AIM_AT_HEAD))) {
+	if ((keyPressed(0x12) && keyPressed(TOGGLE_KEY_AIM_AT_HEAD))
+			|| (HOLD_TOGGLE_AIM_AT_HEAD && keyPressed(TOGGLE_KEY_AIM_AT_HEAD))) {
 		AIM_AT_HEAD = !AIM_AT_HEAD
-		
-		do { 
-			Thread.sleep(25) 
+
+		do {
+			Thread.sleep(25)
 		} while (keyPressed(TOGGLE_KEY_AIM_AT_HEAD))
-			
-		if (HOLD_TOGGLE_AIM_AT_HEAD) 
+
+		if (HOLD_TOGGLE_AIM_AT_HEAD)
 			AIM_AT_HEAD = true
 	}
 }

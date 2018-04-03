@@ -59,6 +59,10 @@ var AIM_SPEED_MAX = 37
  */
 var AIM_STRICTNESS = 2.4
 
+/**
+ * How many milliseconds aimbot will wait after current target die to change the target.
+ */
+var AIM_TARGET_CHANGE_DELAY: Long = 250
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////// --- PERFECT AIM --- /////////////////////////////////////
@@ -112,7 +116,7 @@ var TEAMMATES_ARE_ENEMIES = false
  * Whether or not to ignore walls when aiming.
  */
 var IGNORE_WALLS = false
- 
+
 /**
  * The duration in milliseconds at which aimbot paths are recalculated.
  */

@@ -24,7 +24,6 @@ import com.charlatano.game.CSGO.clientDLL
 import com.charlatano.game.CSGO.engineDLL
 import com.charlatano.game.CSGO.csgoEXE
 import com.charlatano.game.entity.*
-import com.charlatano.game.entity.EntityType.Companion.combatWeapon
 import com.charlatano.utils.extensions.uint
 import com.charlatano.game.offsets.EngineOffsets.dwClientState
 import com.charlatano.game.offsets.ClientOffsets.dwLocalPlayer
@@ -48,62 +47,64 @@ import org.jire.arrowhead.keyPressed
 import com.charlatano.game.Weapons
 import com.charlatano.utils.every
 import com.charlatano.settings.*
-import com.charlatano.game.offsets.ScaleFormOffsets
-import com.charlatano.game.CSGO.scaleFormDLL
 import kotlin.concurrent.thread
 
 
 object SkinChanger {
 	val engine = engineDLL.uint(dwClientState)
+	var weaponAddress = 0
+	var s: String = "";
 
 	fun skinwepindex() = thread {
 		while (true) {
-			if (ENABLE_SKIN_CHANGER && me > 0 && !me.dead() && me.onGround() && !scaleFormDLL.boolean(ScaleFormOffsets.bCursorEnabled)) {
-				forEntities {
-					if (it.type.weapon) {
-						val weaponEntity = it.entity
-						val weaponID = csgoEXE.int(weaponEntity + iItemDefinitionIndex)
-						val weapon = Weapons[weaponID]
-						//FIXME: hOwnerEntity is not working as it should
-						val owner = clientDLL.uint(dwEntityList + ((csgoEXE.uint(weaponEntity + hOwnerEntity) and 0xFFF) - 1L) * 0x10)
-						var skin = SKINS.get(weapon)
-						//System.out.println("$weaponEntity, $weaponID, $weapon, $owner, $me")
-						if (owner == me) {
-							//System.out.println("its mine! $weapon, $weaponEntity")
-							if (skin != null) {
-								val myAccountId = csgoEXE.int(weaponEntity + OriginalOwnerXuidLow)
-								applySkin(weaponEntity, myAccountId, skin.skinID, skin.skinSeed, skin.statTrak, skin.quality, skin.wear, skin.customName)
-							}
-						}
-					}
+			var weapons: Int = 0;
+			var updated: Boolean = false;
+			for (index in 1..64) {
+				var weaponIndex = csgoEXE.uint(me + hMyWeapons + ((index - 1) * 0x4)) and 0xFFF
+				val weaponEntity = clientDLL.uint(dwEntityList + (weaponIndex - 1) * 0x10)
+				val weaponID = csgoEXE.int(weaponEntity + iItemDefinitionIndex)
+				val weapon = Weapons[weaponID] 
+				val myAccountId = csgoEXE.int(weaponEntity + OriginalOwnerXuidLow)
+				var skin = SKINS.get(weapon)
+				if (skin != null) {
+					applySkin(weaponEntity, myAccountId, skin.skinID, skin.skinSeed, skin.statTrak, skin.quality, skin.wear, skin.customName)
+				} 
+				if(!s.contains("$weaponEntity")){
+					updated = true
 				}
-				if (keyPressed(APPLY_SKIN_KEY)) {
-					do {
-						Thread.sleep(25)
-					} while (keyPressed(APPLY_SKIN_KEY))
-					val enginePointer = engineDLL.uint(dwClientState)
-					csgoEXE[enginePointer + 0x174] = -1
-				}
+				s+= "$weaponEntity "
+			}	
+			if (keyPressed(0x12)) {
+				do {
+					Thread.sleep(25)
+				} while (keyPressed(0x12))
+				/*val enginePointer = engineDLL.uint(dwClientState)
+				csgoEXE[enginePointer + 0x174] = -1*/
+				s = ""
 			}
-			if(ENABLE_SKIN_CHANGER) Thread.yield() else Thread.sleep(500)
+			if(updated){
+				val enginePointer = engineDLL.uint(dwClientState)
+				csgoEXE[enginePointer + 0x174] = -1
+			}
+			Thread.yield()
 		}
 	}
 
 }
 
 private fun applySkin(weaponEntity: Long, me: Int, skinID: Int, skinSeed: Int, statTrak: Int, quality: Int, wear: Float, name: String) {
-	csgoEXE[weaponEntity + iItemIDHigh] = 1
-	csgoEXE[weaponEntity + iAccountID] = me
-	csgoEXE[weaponEntity + nFallbackPaintKit] = skinID
-	csgoEXE[weaponEntity + nFallbackSeed] = skinSeed
-	csgoEXE[weaponEntity + nFallbackStatTrak] = statTrak
-	csgoEXE[weaponEntity + iEntityQuality] = quality
-	csgoEXE[weaponEntity + flFallbackWear] = wear
-	if (!name.isBlank()) {
+    csgoEXE[weaponEntity + iItemIDHigh] = 1
+    csgoEXE[weaponEntity + iAccountID] = me
+    csgoEXE[weaponEntity + nFallbackPaintKit] = skinID
+    csgoEXE[weaponEntity + nFallbackSeed] = skinSeed
+    csgoEXE[weaponEntity + nFallbackStatTrak] = statTrak
+    csgoEXE[weaponEntity + iEntityQuality] = quality
+    csgoEXE[weaponEntity + flFallbackWear] = wear
+	if(!name.isBlank()){
 		val chars = name.toCharArray();
-		val length = Math.min(32, chars.size) - 1;
-		for (c in 0..length) {
+		val length = Math.min(32, chars.size) - 1; 
+		for(c in 0..length){ 
 			csgoEXE[weaponEntity + szCustomName + 0x1 * c] = chars[c]
-		}
+		} 
 	}
 }

@@ -28,3 +28,4 @@ var ENABLE_PATH_AIM = false
 var ENABLE_BONE_TRIGGER = false
 var ENABLE_REDUCED_FLASH = true
 var ENABLE_BOMB_TIMER = false
+var ENABLE_SKIN_CHANGER = false

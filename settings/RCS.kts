@@ -25,7 +25,7 @@ import com.charlatano.settings.*
  *
  * Having imperfect RCS will greatly lower league ban rate.
  */
-RCS_MIN = 1.88
+RCS_MIN = 1.5
 RCS_MAX = 1.98
 
 /**

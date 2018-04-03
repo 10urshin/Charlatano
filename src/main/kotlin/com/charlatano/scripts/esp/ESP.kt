@@ -18,8 +18,42 @@
 
 package com.charlatano.scripts.esp
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.Gdx.gl
+import com.charlatano.game.*
+import com.charlatano.game.entity.*
+import com.charlatano.scripts.*
+import com.charlatano.settings.*
+import com.charlatano.utils.*
+import com.charlatano.game.CSGO.clientDLL
+import com.charlatano.game.CSGO.gameHeight
+import com.charlatano.game.CSGO.gameWidth
+import com.charlatano.overlay.CharlatanoOverlay
+import com.charlatano.utils.extensions.uint
+import com.badlogic.gdx.graphics.Color
+import com.charlatano.game.offsets.ClientOffsets.dwLocalPlayer
+
+
 fun esp() {
 	glowEsp()
 	boxEsp()
 	skeletonEsp()
+	crosshair();
+}
+
+
+internal fun crosshair() {
+	CharlatanoOverlay {
+		val weapon = me.weapon()
+		if (weapon.sniper && !me.isScoped()) {
+			shapeRenderer.apply {
+				begin()
+				gl.glLineWidth(LINE_WIDTH * 10);
+				color = Color(CROSSHAIR_COLOR.red / 255f, CROSSHAIR_COLOR.green / 255f, CROSSHAIR_COLOR.blue / 255f, CROSSHAIR_COLOR.alpha.toFloat())
+				line((gameWidth / 2 - 50).toFloat(), (gameHeight / 2).toFloat(), (gameWidth / 2 + 50).toFloat(), (gameHeight / 2).toFloat())
+				line((gameWidth / 2).toFloat(), (gameHeight / 2 - 50).toFloat(), (gameWidth / 2).toFloat(), (gameHeight / 2 + 50).toFloat())
+				end()
+			}
+		}
+	}
 }
