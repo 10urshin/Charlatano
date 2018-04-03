@@ -23,6 +23,12 @@ import com.charlatano.game.Weapons
 import com.charlatano.game.Skin
 
 /**
+ * Press to apply skins. 
+ * Middle mouse by default.
+ */
+APPLY_SKIN_KEY = 3
+
+/**
  * Syntax :
  *  Weapons.WeaponName to Skin(SkinID, Quality, StatTrak, Seed, Wear, name)
  *
