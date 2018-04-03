@@ -77,10 +77,10 @@ object SkinChanger {
 						}
 					}
 				}
-				if (keyPressed(0x4)) {
+				if (keyPressed(APPLY_SKIN_KEY)) {
 					do {
 						Thread.sleep(25)
-					} while (keyPressed(0x4))
+					} while (keyPressed(APPLY_SKIN_KEY))
 					val enginePointer = engineDLL.uint(dwClientState)
 					csgoEXE[enginePointer + 0x174] = -1
 				}
